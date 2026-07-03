@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(Tui
-    src/text.cpp
+    src/console.cpp
+    src/scene.cpp
+    src/widget.cpp
 )
 
 target_include_directories(Tui
