@@ -14,6 +14,7 @@ add_library(Tui
     src/widget.cpp
 
     src/widgets/text.cpp
+    src/widgets/button.cpp
 )
 
 target_compile_features(Tui PUBLIC cxx_std_20)

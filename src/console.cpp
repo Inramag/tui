@@ -17,7 +17,7 @@ void Console::init() {
     SetConsoleCursorInfo(console, &info);
 }
 
-Size Console::GetSize() {
+Size Console::getSize() {
     Size size{0, 0};
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
@@ -27,7 +27,7 @@ Size Console::GetSize() {
     return size;
 }
 
-void Console::Update(const std::vector<std::string>& buffer) {
+void Console::update(const std::vector<std::string>& buffer) {
     std::string output;
     output.reserve(buffer.size() * buffer[0].size());
 

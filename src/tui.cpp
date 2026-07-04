@@ -10,10 +10,10 @@ Scene* Tui::scene = nullptr;
 std::deque<Scene> Tui::scenes{};
 
 void Tui::run() {
-    auto size = Console::GetSize();
+    auto size = Console::getSize();
     scene->render();
     while (true) {
-        auto newsize = Console::GetSize();
+        auto newsize = Console::getSize();
         if (size != newsize) {
             size = newsize;
             scene->render();

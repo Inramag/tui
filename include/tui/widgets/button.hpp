@@ -2,10 +2,10 @@
 
 #include <tui/widget.hpp>
 
-class Text : public Widget {
+class Button : public Widget {
 public:
-    Text(const std::string& text);
-    virtual ~Text();
+    Button(const std::string& text, std::function<void()> callback);
+    virtual ~Button();
 
     std::string text;
 
