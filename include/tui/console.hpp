@@ -5,10 +5,19 @@
 
 struct Size {
     int x, y;
+
+    bool operator==(const Size& other) const {
+        return x == other.x && y == other.y;
+    }
+
+    bool operator!=(const Size& other) const {
+        return !(*this == other);
+    }
 };
 
 class Console {
 public:
+    static void init();
     static Size GetSize();
     static void Update(const std::vector<std::string>& buffer);
 };

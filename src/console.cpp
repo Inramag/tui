@@ -1,30 +1,29 @@
 #include <tui/console.hpp>
 
+#include <iostream>
+
 #include <string>
 #include <vector>
 
-#ifdef _WIN32
 #include <windows.h>
-#elif defined(__linux__)
-#include <sys/ioctl.h>
-#include <unistd.h>
-#endif
+
+void Console::init() {
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    CONSOLE_CURSOR_INFO info;
+    GetConsoleCursorInfo(console, &info);
+
+    info.bVisible = FALSE;
+    SetConsoleCursorInfo(console, &info);
+}
 
 Size Console::GetSize() {
     Size size{0, 0};
-#ifdef _WIN32
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
         size.x = csbi.srWindow.Right - csbi.srWindow.Left + 1;
         size.y = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
     }
-#elif defined(__linux__)
-    struct winsize w;
-    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == 0) {
-        size.x = w.ws_col;
-        size.y = w.ws_row;
-    }
-#endif
     return size;
 }
 
@@ -32,13 +31,12 @@ void Console::Update(const std::vector<std::string>& buffer) {
     std::string output;
     output.reserve(buffer.size() * buffer[0].size());
 
-    for (const auto& line : buffer)
-    {
-        output += line;
-        output += '\n';
+    for (size_t i = 0; i < buffer.size(); i++) {
+        output += buffer[i];
+        if (i + 1 < buffer.size())
+            output += '\n';
     }
 
-#ifdef _WIN32
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
     SetConsoleCursorPosition(console, {0, 0});
@@ -51,7 +49,4 @@ void Console::Update(const std::vector<std::string>& buffer) {
         &written,
         nullptr
     );
-#elif defined(__linux__)
-    std::cout << "\033[H" << output;
-#endif
 }
