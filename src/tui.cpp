@@ -35,3 +35,7 @@ void Tui::switchScene(int index) {
     }
     scene->render();
 }
+
+void Tui::switchScene(Scene* s) {
+    scene = s;
+}

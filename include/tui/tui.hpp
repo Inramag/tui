@@ -10,8 +10,8 @@ public:
     static Scene& createScene();
     
     static void switchScene(int index);
+    static void switchScene(Scene* scene);
 
-private:
     static Scene* scene; // current scene
     static std::deque<Scene> scenes; // all scenes
 };

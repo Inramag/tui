@@ -16,6 +16,13 @@ public:
         widgets.push_back(std::move(widget));
         return ref;
     }
+    void clear();
+
+    template<class T>
+    T& get(size_t index);
+
+    int getFocusIndex();
+
     void binds();
     void render() const;
 

@@ -3,6 +3,14 @@
 #include <tui/tui.hpp>
 #include <tui/console.hpp>
 
+void Scene::clear() {
+    widgets.clear();
+}
+
+int Scene::getFocusIndex() {
+    return findex;
+}
+
 void Scene::binds()  {
     bool moved = false;
     if (Input::isDown(Key::Up) && findex > 0) {
