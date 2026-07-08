@@ -10,9 +10,20 @@ Scene* Tui::scene = nullptr;
 std::deque<Scene> Tui::scenes{};
 
 void Tui::run() {
+    DWORD mode;
+    GetConsoleMode(Input::_input, &mode);
+
+    mode &= ~ENABLE_QUICK_EDIT_MODE;
+    mode |= ENABLE_EXTENDED_FLAGS;
+    mode |= ENABLE_WINDOW_INPUT;
+
+    SetConsoleMode(Input::_input, mode);
+
     Console::size = Console::getSize();
     scene->render();
     while (true) {
+        Input::update();
+        
         auto newsize = Console::getSize();
         if (Console::size != newsize) {
             Console::size = newsize;
