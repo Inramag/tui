@@ -7,6 +7,7 @@
 class Tui {
 public:
     static void run();
+    static void exit();
     
     static Scene& createScene();
     
@@ -15,4 +16,8 @@ public:
 
     static Scene* scene; // current scene
     static std::deque<Scene> scenes; // all scenes
+
+
+private:
+    static bool _active;
 };

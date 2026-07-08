@@ -6,6 +6,8 @@
 Scene* Tui::scene = nullptr;
 std::deque<Scene> Tui::scenes{};
 
+bool Tui::_active = true;
+
 void Tui::run() {
     DWORD mode;
     GetConsoleMode(Input::_input, &mode);
@@ -18,7 +20,7 @@ void Tui::run() {
 
     Console::size = Console::getSize();
     scene->render();
-    while (true) {
+    while (_active) {
         Input::update();
         
         auto nsize = Console::getSize();
@@ -28,6 +30,9 @@ void Tui::run() {
         }
         scene->binds();
     }
+}
+void Tui::exit() {
+    _active = false;
 }
 
 Scene& Tui::createScene() {
