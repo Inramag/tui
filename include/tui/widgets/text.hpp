@@ -5,21 +5,24 @@
 
 class Text : public Widget {
 public:
-    Text(const std::string& text);
-    virtual ~Text();
+    Text(std::string text);
+    ~Text() override = default;
 
-    Size pos{};
 
-    const std::string& get();
+    const std::string& get() const;
     void set(std::string ntext);
+
 
 protected:
     std::string render() const override;
 
+
 private:
     std::string text;
-    int lineCount;
 
-    Scene* parent;
+    Size pos{};
+    int lineCount{};
+
+    Scene* parent{};
     Scene scene;
 };
