@@ -11,15 +11,18 @@ class Scene;
 
 class Widget {
 public:
-    Widget();
-    virtual ~Widget();
-    
+    Widget() = default;
+    virtual ~Widget() = default;
+
+
 protected:
     virtual std::string render() const = 0;
 
+    std::unordered_map<Key, std::function<void()>> _binds;
+
+
+private:
     void binds();
     
     friend class Scene;
-
-    std::unordered_map<Key, std::function<void()>> _binds;
 };
