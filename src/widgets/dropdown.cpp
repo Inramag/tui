@@ -2,7 +2,7 @@
 
 #include <tui/tui.hpp>
 
-Dropdown::Dropdown(const std::string& t, std::vector<std::string> variables) : text(std::move(t)) {
+Dropdown::Dropdown(std::string t, std::vector<std::string> variables) : text(std::move(t)) {
     set(variables);
     _binds[Key::Enter] = std::move([this]() {
         if (curr == -1) return;
@@ -12,6 +12,15 @@ Dropdown::Dropdown(const std::string& t, std::vector<std::string> variables) : t
     });
 }
 Dropdown::~Dropdown() = default;
+
+
+
+Dropdown& Dropdown::onChange(std::function<void()> act) {
+    _act = std::move(act);
+    return *this;
+}
+
+
 
 std::string Dropdown::render() const {
     std::string ret = text + ": ";
@@ -29,6 +38,7 @@ void Dropdown::select(int i) {
     curr = i;
     buttons[curr]->text[1] = '*';
     Tui::switchScene(parent);
+    if (_act) _act();
 }
 
 const std::vector<std::string>& Dropdown::getAll() {

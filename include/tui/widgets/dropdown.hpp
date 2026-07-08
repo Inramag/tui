@@ -6,8 +6,10 @@
 
 class Dropdown : public Widget {
 public:
-    Dropdown(const std::string& text, std::vector<std::string> variables);
+    Dropdown(std::string text, std::vector<std::string> variables);
     virtual ~Dropdown();
+
+    Dropdown& onChange(std::function<void()> act);
 
     std::string text;
 
@@ -25,6 +27,8 @@ private:
     std::vector<Button*> buttons;
 
     Scene scene;
+
+    std::function<void()> _act;
 
     std::string render() const override;
 };
