@@ -63,7 +63,7 @@ int main() {
 This example creates a scene, adds a text widget, and starts the main event loop.
 
 Console:
-
+<img width="1920" height="1080" alt="WindowsTerminal_jJsgaoxpqJ" src="https://github.com/user-attachments/assets/692589cb-6860-4d92-84b1-a7b56ce4b16b" />
 
 ---
 
