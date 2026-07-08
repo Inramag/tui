@@ -10,14 +10,18 @@
 class Scene {
 public:
     Scene();
-    Scene(std::unordered_map<Key, std::function<void()>>, std::function<void()>);
-    ~Scene();
+    Scene(std::unordered_map<Key, std::function<void()>> binds, std::function<std::vector<std::string>()> render);
+    ~Scene() = default;
 
     Scene(const Scene&) = delete;
     Scene& operator=(const Scene&) = delete;
 
     Scene(Scene&&) noexcept = default;
     Scene& operator=(Scene&&) noexcept = default;
+
+
+    static Scene& create();
+
 
     template <typename T, typename... Args>
     T& add(Args&&... args) {
@@ -26,6 +30,7 @@ public:
         widgets.push_back(std::move(widget));
         return ref;
     }
+
     void clear();
 
     template<class T>
@@ -33,17 +38,19 @@ public:
         return static_cast<T&>(*widgets[i]);
     }
 
-    int getFocusIndex();
+    int getFocusIndex() const;
 
+
+private:
     void binds();
     void render() const;
 
-    static Scene& create();
+    friend class Tui;
 
-private:
+
     std::unordered_map<Key, std::function<void()>> _binds;
-    const std::function<void()> _render;
+    const std::function<std::vector<std::string>()> _render;
     
-    int findex = 0;
+    int _focusIndex = 0;
     std::vector<std::unique_ptr<Widget>> widgets;
 };
