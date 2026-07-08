@@ -14,7 +14,7 @@ public:
     std::string get();
     void select(int i);
 
-    const std::vector<std::string>& getAll() const;
+    const std::vector<std::string>& getAll();
     void set(std::vector<std::string> nvariables);
 
 private:

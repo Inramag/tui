@@ -17,7 +17,10 @@ struct Size {
 
 class Console {
 public:
+    static Size size;
+
     static void init();
     static Size getSize();
+    static void update(const std::string& buffer);
     static void update(const std::vector<std::string>& buffer);
 };

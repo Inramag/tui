@@ -5,11 +5,10 @@
 Dropdown::Dropdown(const std::string& t, std::vector<std::string> variables) : text(std::move(t)) {
     set(variables);
     _binds[Key::Enter] = std::move([this]() {
-        this.parent = Tui::scene;
-
         if (curr == -1) return;
+
+        this->parent = Tui::scene;
         Tui::switchScene(&scene);
-        scene.render();
     });
 }
 Dropdown::~Dropdown() = default;
@@ -17,7 +16,7 @@ Dropdown::~Dropdown() = default;
 std::string Dropdown::render() const {
     std::string ret = text + ": ";
     if (curr == -1) ret += "(*)";
-    else ret += variables[curr];
+    else ret += "[ " + variables[curr] + " ]";
     return ret;
 }
 

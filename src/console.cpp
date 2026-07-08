@@ -7,6 +7,8 @@
 
 #include <windows.h>
 
+Size Console::size {};
+
 void Console::init() {
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -26,7 +28,20 @@ Size Console::getSize() {
     }
     return size;
 }
+void Console::update(const std::string& buffer) {
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
+    SetConsoleCursorPosition(console, {0, 0});
+
+    DWORD written;
+    WriteConsoleA(
+        console,
+        buffer.data(),
+        static_cast<DWORD>(buffer.size()),
+        &written,
+        nullptr
+    );
+}
 void Console::update(const std::vector<std::string>& buffer) {
     std::string output;
     output.reserve(buffer.size() * buffer[0].size());
@@ -37,16 +52,5 @@ void Console::update(const std::vector<std::string>& buffer) {
             output += '\n';
     }
 
-    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    SetConsoleCursorPosition(console, {0, 0});
-
-    DWORD written;
-    WriteConsoleA(
-        console,
-        output.data(),
-        static_cast<DWORD>(output.size()),
-        &written,
-        nullptr
-    );
+    update(output);
 }

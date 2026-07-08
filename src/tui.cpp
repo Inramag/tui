@@ -10,12 +10,12 @@ Scene* Tui::scene = nullptr;
 std::deque<Scene> Tui::scenes{};
 
 void Tui::run() {
-    auto size = Console::getSize();
+    Console::size = Console::getSize();
     scene->render();
     while (true) {
         auto newsize = Console::getSize();
-        if (size != newsize) {
-            size = newsize;
+        if (Console::size != newsize) {
+            Console::size = newsize;
             scene->render();
         }
         scene->binds();
@@ -23,19 +23,18 @@ void Tui::run() {
 }
 
 Scene& Tui::createScene() {
-    scenes.push_back(Scene());
+    scenes.emplace_back();
     Scene& nscene = scenes.back();
     if (scene == nullptr) scene = &nscene;
     return nscene;
 }
 
 void Tui::switchScene(int index) {
-    if (index >= 0 && index < static_cast<int>(scenes.size())) {
-        scene = &scenes[index];
-    }
-    scene->render();
+    if (index >= 0 && index < static_cast<int>(scenes.size()))
+        switchScene(&scenes[index]);
 }
 
 void Tui::switchScene(Scene* s) {
     scene = s;
+    scene->render();
 }

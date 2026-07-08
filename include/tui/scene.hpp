@@ -9,6 +9,16 @@
 
 class Scene {
 public:
+    Scene();
+    Scene(std::unordered_map<Key, std::function<void()>>, std::function<void()>);
+    ~Scene();
+
+    Scene(const Scene&) = delete;
+    Scene& operator=(const Scene&) = delete;
+
+    Scene(Scene&&) noexcept = default;
+    Scene& operator=(Scene&&) noexcept = default;
+
     template <typename T, typename... Args>
     T& add(Args&&... args) {
         auto widget = std::make_unique<T>(std::forward<Args>(args)...);
@@ -19,7 +29,9 @@ public:
     void clear();
 
     template<class T>
-    T& get(size_t index);
+    T& get(size_t i) {
+        return static_cast<T&>(*widgets[i]);
+    }
 
     int getFocusIndex();
 
@@ -28,7 +40,10 @@ public:
 
     static Scene& create();
 
-protected:
-    std::vector<std::unique_ptr<Widget>> widgets;
+private:
+    std::unordered_map<Key, std::function<void()>> _binds;
+    const std::function<void()> _render;
+    
     int findex = 0;
+    std::vector<std::unique_ptr<Widget>> widgets;
 };
