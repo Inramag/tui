@@ -4,7 +4,7 @@
 
 class Checkbox : public Widget {
 public:
-    Checkbox(const std::string& text, bool value);
+    Checkbox(const std::string& text, bool value = false);
     virtual ~Checkbox();
 
     std::string text;
