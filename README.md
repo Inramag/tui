@@ -60,6 +60,7 @@ int main() {
     Tui::run();
 }
 ```
+
 This example creates a scene, adds a text widget, and starts the main event loop.
 
 Console:
@@ -99,7 +100,6 @@ menu.add<Button>("Exit", [] {
     Tui::exit();
 });
 ```
-where T is a class inherited from Widget.
 
 Switch between scenes:
 
