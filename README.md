@@ -35,7 +35,7 @@ Add the following lines to your project's `CMakeLists.txt`:
 
 ```cmake
 add_subdirectory(Tui)
-target_link_libraries(TuiTest PRIVATE Tui)
+target_link_libraries(MyProject PRIVATE Tui)
 ```
 
 ---
