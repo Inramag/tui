@@ -5,16 +5,20 @@
 class Checkbox : public Widget {
 public:
     Checkbox(std::string text, bool value = false);
-    virtual ~Checkbox();
+    ~Checkbox() override = default;
 
     Checkbox& onChange(std::function<void()> act);
 
-    std::string text;
-    bool value;
+    bool get() const;
+
 
 protected:
     std::string render() const override;
 
+
 private:
+    std::string text;
+    bool value{};
+
     std::function<void()> _act;
 };
