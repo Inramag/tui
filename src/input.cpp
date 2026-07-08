@@ -1,12 +1,22 @@
 #include <tui/input.hpp>
 
 #include <vector>
-#include <windows.h>
 
 HANDLE Input::_input = GetStdHandle(STD_INPUT_HANDLE);
 
 std::unordered_map<Key, bool> Input::_down;
 std::unordered_map<Key, bool> Input::_pressed;
+
+bool Input::isDown(Key key) {
+    auto it = _down.find(key);
+    return it != _down.end() && it->second;
+}
+bool Input::isPressed(Key key) {
+    auto it = _pressed.find(key);
+    return it != _pressed.end() && it->second;
+}
+
+
 
 void Input::update() {
     _down.clear();
@@ -49,11 +59,4 @@ void Input::update() {
             _pressed[k] = false;
         }
     }
-}
-
-bool Input::isDown(Key key) {
-    return _down[key];
-}
-bool Input::isPressed(Key key) {
-    return _pressed[key];
 }
