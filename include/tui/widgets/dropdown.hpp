@@ -7,28 +7,32 @@
 class Dropdown : public Widget {
 public:
     Dropdown(std::string text, std::vector<std::string> variables);
-    virtual ~Dropdown();
+    ~Dropdown() override = default;
+
+
+    std::string get() const;
+    const std::vector<std::string>& getAll() const;
+
+    void select(int i);
+
+    void set(std::vector<std::string> nvariables);
 
     Dropdown& onChange(std::function<void()> act);
 
-    std::string text;
 
-    std::string get();
-    void select(int i);
+protected:
+    std::string render() const override;
 
-    const std::vector<std::string>& getAll();
-    void set(std::vector<std::string> nvariables);
 
 private:
-    Scene* parent;
+    std::string text;
+    int curr{-1};
 
-    int curr;
     std::vector<std::string> variables;
     std::vector<Button*> buttons;
 
-    Scene scene;
-
     std::function<void()> _act;
-
-    std::string render() const override;
+    
+    Scene* parent{};
+    Scene scene;
 };

@@ -11,39 +11,32 @@ Dropdown::Dropdown(std::string t, std::vector<std::string> variables) : text(std
         Tui::switchScene(&scene);
     });
 }
-Dropdown::~Dropdown() = default;
 
 
 
-Dropdown& Dropdown::onChange(std::function<void()> act) {
-    _act = std::move(act);
-    return *this;
-}
-
-
-
-std::string Dropdown::render() const {
-    std::string ret = text + ": ";
-    if (curr == -1) ret += "(*)";
-    else ret += "[ " + variables[curr] + " ]";
-    return ret;
-}
-
-std::string Dropdown::get() {
+std::string Dropdown::get() const {
     if (curr == -1) return "";
     return variables[curr];
 }
+const std::vector<std::string>& Dropdown::getAll() const {
+    return variables;
+}
+
 void Dropdown::select(int i) {
-    buttons[curr]->text[1] = ' ';
+    auto str = buttons[curr]->get();
+    str[1] = ' ';
+    buttons[curr]->set(str);
+    
     curr = i;
-    buttons[curr]->text[1] = '*';
+    
+    auto str = buttons[curr]->get();
+    str[1] = '*';
+    buttons[curr]->set(str);
+
     Tui::switchScene(parent);
     if (_act) _act();
 }
 
-const std::vector<std::string>& Dropdown::getAll() {
-    return variables;
-}
 void Dropdown::set(std::vector<std::string> nvariables) {
     variables = std::move(nvariables);
     if (variables.empty()) curr = -1;
@@ -58,6 +51,20 @@ void Dropdown::set(std::vector<std::string> nvariables) {
                 select(i);
             }));
         }
-        buttons[0]->text[1] = '*';
+        select(0);
     }
+}
+
+Dropdown& Dropdown::onChange(std::function<void()> act) {
+    _act = std::move(act);
+    return *this;
+}
+
+
+
+std::string Dropdown::render() const {
+    std::string ret = text + ": ";
+    if (curr == -1) ret += "(*)";
+    else ret += "[ " + variables[curr] + " ]";
+    return ret;
 }
