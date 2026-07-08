@@ -16,6 +16,7 @@ add_library(Tui
     src/widgets/text.cpp
     src/widgets/button.cpp
     src/widgets/dropdown.cpp
+    src/widgets/checkbox.cpp
 )
 
 target_compile_features(Tui PUBLIC cxx_std_20)
