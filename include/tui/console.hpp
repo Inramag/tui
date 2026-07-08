@@ -4,15 +4,10 @@
 #include <vector>
 
 struct Size {
-    int x, y;
+    int x;
+    int y;
 
-    bool operator==(const Size& other) const {
-        return x == other.x && y == other.y;
-    }
-
-    bool operator!=(const Size& other) const {
-        return !(*this == other);
-    }
+    bool operator==(const Size&) const = default;
 };
 
 class Console {
@@ -21,6 +16,11 @@ public:
 
     static void init();
     static Size getSize();
+
+
+private:
     static void update(const std::string& buffer);
     static void update(const std::vector<std::string>& buffer);
+
+    friend class Scene;
 };

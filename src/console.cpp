@@ -1,13 +1,8 @@
 #include <tui/console.hpp>
 
-#include <iostream>
-
-#include <string>
-#include <vector>
-
 #include <windows.h>
 
-Size Console::size {};
+Size Console::size{};
 
 void Console::init() {
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -28,6 +23,9 @@ Size Console::getSize() {
     }
     return size;
 }
+
+
+
 void Console::update(const std::string& buffer) {
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
