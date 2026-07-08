@@ -7,6 +7,7 @@
 class Tui {
 public:
     static void run();
+    
     static Scene& createScene();
     
     static void switchScene(int index);

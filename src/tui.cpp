@@ -1,10 +1,7 @@
 #include <tui/tui.hpp>
 
-#include <deque>
-
 #include <tui/console.hpp>
 #include <tui/input.hpp>
-#include <tui/scene.hpp>
 
 Scene* Tui::scene = nullptr;
 std::deque<Scene> Tui::scenes{};
@@ -24,9 +21,9 @@ void Tui::run() {
     while (true) {
         Input::update();
         
-        auto newsize = Console::getSize();
-        if (Console::size != newsize) {
-            Console::size = newsize;
+        auto nsize = Console::getSize();
+        if (Console::size != nsize) {
+            Console::size = nsize;
             scene->render();
         }
         scene->binds();
@@ -45,7 +42,7 @@ void Tui::switchScene(int index) {
         switchScene(&scenes[index]);
 }
 
-void Tui::switchScene(Scene* s) {
-    scene = s;
+void Tui::switchScene(Scene* otherScene) {
+    scene = otherScene;
     scene->render();
 }
