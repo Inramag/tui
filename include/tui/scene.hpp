@@ -39,11 +39,12 @@ public:
     }
 
     int getFocusIndex() const;
+    
+    void render() const;
 
 
 private:
     void binds();
-    void render() const;
 
     friend class Tui;
 

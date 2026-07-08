@@ -29,11 +29,11 @@ void Dropdown::select(int i) {
     
     curr = i;
     
-    auto str = buttons[curr]->get();
+    str = buttons[curr]->get();
     str[1] = '*';
     buttons[curr]->set(str);
 
-    Tui::switchScene(parent);
+    if (parent) Tui::switchScene(parent);
     if (_act) _act();
 }
 
