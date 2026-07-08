@@ -4,11 +4,17 @@
 
 class Button : public Widget {
 public:
-    Button(const std::string& text, std::function<void()> callback);
-    virtual ~Button();
+    Button(std::string text, std::function<void()> callback);
+    ~Button() override = default;
 
-    std::string text;
+    const std::string& get() const;
+    void set(std::string text);
+
 
 protected:
     std::string render() const override;
+
+
+private:
+    std::string text;
 };
