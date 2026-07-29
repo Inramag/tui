@@ -1,20 +1,13 @@
 #include <tui/widgets/button.hpp>
 
-Button::Button(std::string t, std::function<void()> c) : text(std::move(t)) {
-    _binds[Key::Enter] = std::move(c);
+Button::Button(std::string t, std::function<void()> c, bool withBrackets = true) : text(std::move(t)), _withBrackets(withBrackets) {
+    setCallback(c);
 }
 
-
-
-const std::string& Button::get() const {
-    return text;
+void Button::setCallback(std::function<void()> callback) {
+    _binds[Key::Enter] = std::move(callback);
 }
-void Button::set(std::string text) {
-    this->text = std::move(text);
-}
-
-
 
 std::string Button::render() const {
-    return "[ " + text + " ]";
+    return _withBrackets ? ("[ " + text + " ]") : text;
 }

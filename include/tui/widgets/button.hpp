@@ -7,14 +7,11 @@ public:
     Button(std::string text, std::function<void()> callback);
     ~Button() override = default;
 
-    const std::string& get() const;
-    void set(std::string text);
+    std::string text;
+    bool _withBrackets;
 
+    void setCallback(std::function<void()>);
 
 protected:
     std::string render() const override;
-
-
-private:
-    std::string text;
 };
