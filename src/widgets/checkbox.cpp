@@ -1,21 +1,12 @@
 #include <tui/widgets/checkbox.hpp>
 
 Checkbox::Checkbox(std::string t, bool val) : text(std::move(t)), value(val) {
-    _binds[Key::Enter] = [this] { value = !value; if (_act) _act(); };
+    _binds[Key::Enter] = [this] { value = !value; if (_onChange) _onChange(); };
 }
 
-
-
-Checkbox& Checkbox::onChange(std::function<void()> act) {
-    _act = std::move(act);
-    return *this;
+void Checkbox::onChange(std::function<void()> act) {
+    _onChange = std::move(act);
 }
-
-bool Checkbox::get() const {
-    return value;
-}
-
-
 
 std::string Checkbox::render() const {
     std::string ret = "[ ] " + text;

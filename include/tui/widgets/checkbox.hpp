@@ -7,18 +7,14 @@ public:
     Checkbox(std::string text, bool value = false);
     ~Checkbox() override = default;
 
-    Checkbox& onChange(std::function<void()> act);
+    std::string text;
+    bool value;
 
-    bool get() const;
-
+    void onChange(std::function<void()> act);
 
 protected:
     std::string render() const override;
 
-
 private:
-    std::string text;
-    bool value{};
-
-    std::function<void()> _act;
+    std::function<void()> _onChange;
 };
