@@ -10,6 +10,7 @@
 class Scene {
 public:
     Scene();
+    Scene(std::unordered_map<Key, std::function<void()>> binds);
     Scene(std::unordered_map<Key, std::function<void()>> binds, std::function<std::vector<std::string>()> render);
     ~Scene() = default;
 
