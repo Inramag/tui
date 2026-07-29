@@ -62,16 +62,6 @@ Text::Text(std::string text) : text(std::move(text)), scene({
     };
 }
 
-
-const std::string& Text::get() const {
-    return text;
-}
-void Text::set(std::string ntext) {
-    text = std::move(ntext);
-}
-
-
-
 std::string Text::render() const {
     std::string buff;
     int i = 0;

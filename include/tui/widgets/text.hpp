@@ -8,18 +8,12 @@ public:
     Text(std::string text);
     ~Text() override = default;
 
-
-    const std::string& get() const;
-    void set(std::string ntext);
-
+    std::string text;
 
 protected:
     std::string render() const override;
 
-
 private:
-    std::string text;
-
     Size pos{};
     int lineCount{};
 
