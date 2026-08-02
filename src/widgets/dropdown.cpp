@@ -13,8 +13,8 @@ Dropdown::Dropdown(std::string t, std::vector<std::string> options) : text(std::
 }
 
 std::string Dropdown::curr() const {
-    if (curr == -1) return "";
-    return _options[curr];
+    if (icurr == -1) return "";
+    return _options[icurr];
 }
 const std::vector<std::string>& Dropdown::options() const {
     return _options;
@@ -43,15 +43,11 @@ void Dropdown::select(int i) {
     if (icurr == -1) return;
     if (i < 0 || i >= _options.size()) return;
 
-    auto str = _buttons[icurr]->get();
-    str[1] = ' ';
-    _buttons[icurr]->set(str);
+    _buttons[icurr]->text[1] = ' ';
     
     icurr = i;
     
-    str = _buttons[icurr]->get();
-    str[1] = '*';
-    _buttons[icurr]->set(str);
+    _buttons[icurr]->text[1] = '*';
 }
 
 void Dropdown::onChange(std::function<void()> act) {

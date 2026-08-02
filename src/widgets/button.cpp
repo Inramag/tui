@@ -1,6 +1,6 @@
 #include <tui/widgets/button.hpp>
 
-Button::Button(std::string t, std::function<void()> c, bool withBrackets = true) : text(std::move(t)), _withBrackets(withBrackets) {
+Button::Button(std::string t, std::function<void()> c, bool withBrackets) : text(std::move(t)), _withBrackets(withBrackets) {
     setCallback(c);
 }
 

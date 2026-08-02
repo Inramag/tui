@@ -1,25 +1,28 @@
 #include <tui/input.hpp>
 
+#include <algorithm>
 #include <vector>
 
 HANDLE Input::_input = GetStdHandle(STD_INPUT_HANDLE);
 
-std::unordered_map<Key, bool> Input::_down;
-std::unordered_map<Key, bool> Input::_pressed;
+std::vector<Key> Input::_pressed;
+std::vector<Key> Input::_down;
 
-bool Input::isDown(Key key) {
-    auto it = _down.find(key);
-    return it != _down.end() && it->second;
+static bool contains(const std::vector<Key>& vec, Key key) {
+    return std::find(vec.begin(), vec.end(), key) != vec.end();
 }
-bool Input::isPressed(Key key) {
-    auto it = _pressed.find(key);
-    return it != _pressed.end() && it->second;
+
+bool Input::pressed(Key key) {
+    return contains(_pressed, key);
+}
+bool Input::down(Key key) {
+    return contains(_down, key);
 }
 
 
 
 void Input::update() {
-    _down.clear();
+    _pressed.clear();
 
     DWORD count;
     GetNumberOfConsoleInputEvents(_input, &count);
@@ -31,32 +34,21 @@ void Input::update() {
     ReadConsoleInput(_input, events.data(), count, &count);
 
     for (DWORD i = 0; i < count; ++i) {
-        if (events[i].EventType != KEY_EVENT)
-            continue;
+        if (events[i].EventType != KEY_EVENT) continue;
 
         const KEY_EVENT_RECORD& key = events[i].Event.KeyEvent;
-        
-        switch (key.wVirtualKeyCode) {
-            case VK_LEFT:
-            case VK_RIGHT:
-            case VK_UP:
-            case VK_DOWN:
-            case VK_RETURN:
-            case VK_ESCAPE:
-                break;
-            default:
-                continue;
-        }
         Key k = static_cast<Key>(key.wVirtualKeyCode);
+        
+        if (!(k == Key::Enter || k == Key::Escape || (k >= Key::Left && k <= Key::Down) || (k >= Key::N0 && k <= Key::N9) || (k >= Key::A && k <= Key::Z) || (k >= Key::F1 && k <= Key::F12))) continue;
 
         if (key.bKeyDown) {
-            if (!_pressed[k])
-                _down[k] = true;
+            if (!contains(_down, k))
+                _pressed.push_back(k);
 
-            _pressed[k] = true;
+            _down.push_back(k);
         }
         else {
-            _pressed[k] = false;
+            _down.erase(std::remove(_down.begin(), _down.end(), k), _down.end());
         }
     }
 }

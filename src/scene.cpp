@@ -53,7 +53,7 @@ int Scene::getFocusIndex() const { return _focusIndex; }
 
 void Scene::binds() {
     for (auto& [key, callback] : _binds) {
-        if (Input::isDown(key)) {
+        if (Input::pressed(key)) {
             callback();
             Tui::scene->render();
         }

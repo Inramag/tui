@@ -4,7 +4,7 @@
 
 class Button : public Widget {
 public:
-    Button(std::string text, std::function<void()> callback);
+    Button(std::string text, std::function<void()> callback, bool withBrackets = true);
     ~Button() override = default;
 
     std::string text;
