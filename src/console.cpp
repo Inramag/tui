@@ -4,7 +4,12 @@
 
 Size Console::size{};
 
+static COORD _cursor;
+
 void Console::init() {
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
+
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
     CONSOLE_CURSOR_INFO info;
@@ -26,29 +31,45 @@ Size Console::getSize() {
 
 
 
-void Console::update(const std::string& buffer) {
+void Console::update(const std::wstring& buffer) {
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
     SetConsoleCursorPosition(console, {0, 0});
 
     DWORD written;
-    WriteConsoleA(
+    WriteConsoleW(
         console,
         buffer.data(),
         static_cast<DWORD>(buffer.size()),
         &written,
         nullptr
     );
+
+    SetConsoleCursorPosition(console, _cursor);
 }
-void Console::update(const std::vector<std::string>& buffer) {
-    std::string output;
+void Console::update(const std::vector<std::wstring>& buffer) {
+    std::wstring output;
     output.reserve(buffer.size() * buffer[0].size());
 
     for (size_t i = 0; i < buffer.size(); i++) {
         output += buffer[i];
         if (i + 1 < buffer.size())
-            output += '\n';
+            output += L'\n';
     }
 
     update(output);
+}
+
+void Console::showCursor(bool show) {
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    CONSOLE_CURSOR_INFO info;
+    GetConsoleCursorInfo(console, &info);
+
+    info.bVisible = show;
+    SetConsoleCursorInfo(console, &info);
+}
+
+void Console::setCursor(int x, int y) {
+    _cursor = {static_cast<SHORT>(x), static_cast<SHORT>(y)};
 }

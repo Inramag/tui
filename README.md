@@ -1,6 +1,6 @@
 # tui
 
-> A simple C++20 terminal user interface library.
+> A lightweight C++20 terminal user interface library for Windows.
 
 tui is a lightweight library for building terminal user interfaces in modern C++. It provides scenes, widgets, and keyboard navigation with no external dependencies.
 
@@ -11,6 +11,7 @@ tui is a lightweight library for building terminal user interfaces in modern C++
 - Scene-based architecture
 - Keyboard navigation
 - Event-driven widgets
+- Unicode text support
 - Scrollable text viewer
 - Simple and lightweight design
 - No external dependencies
@@ -49,6 +50,7 @@ The simplest `main.cpp`:
 #include <tui/tui.hpp>
 #include <tui/scene.hpp>
 #include <tui/widgets/text.hpp>
+#include <tui/widgets/button.hpp>
 
 int main() {
     Console::init();
@@ -56,6 +58,10 @@ int main() {
     Scene& scene = Scene::create();
 
     scene.add<Text>("Hello, World!");
+
+    scene.add<Button>("Exit", [] {
+        Tui::exit();
+    });
 
     Tui::run();
 }
@@ -113,7 +119,13 @@ Tui::switchScene(1);
 
 Widgets are the building blocks of the user interface. Each widget is responsible for rendering itself and handling user interaction.
 
-The library provides several built-in widgets, including text labels, buttons, checkboxes, and dropdown lists.
+Built-in widgets include:
+
+- Text
+- Button
+- Checkbox
+- Dropdown
+- TextInput
 
 ---
 
@@ -160,6 +172,16 @@ scene.add<Dropdown>(
     "Language",
     {"English", "German", "French"}
 );
+```
+
+---
+
+### TextInput
+
+Creates a single-line text input widget.
+
+```cpp
+scene.add<TextInput>("Name", "John Doe");
 ```
 
 ---

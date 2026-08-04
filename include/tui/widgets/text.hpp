@@ -6,12 +6,13 @@
 class Text : public Widget {
 public:
     Text(std::string text);
+    Text(std::wstring text);
     ~Text() override = default;
 
-    std::string text;
+    std::wstring text;
 
 protected:
-    std::string render() const override;
+    std::wstring render() const override;
 
 private:
     Size pos{};

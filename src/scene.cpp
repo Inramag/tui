@@ -2,38 +2,14 @@
 
 #include <tui/tui.hpp>
 
-Scene::Scene() : Scene(std::unordered_map<Key, std::function<void()>>{}) {}
-Scene::Scene(std::unordered_map<Key, std::function<void()>> binds) : Scene(
-    std::move(binds),
-    [this] {
-        Size size = Console::getSize();
-        std::vector<std::string> buffer(
-            size.y,
-            std::string(size.x, ' ')
-        );
-
-        if (!this->widgets.empty()) {
-            int center = (size.y - 1) / 2;
-
-            int start = 0;
-            if (_focusIndex >= center) start = _focusIndex - center;
-            int end = std::min(start + size.y - std::max(0, center - _focusIndex) - 1, static_cast<int>(widgets.size())-1);
-
-            for (int i = start; i <= end; i++) {
-                auto text = widgets[i]->render().substr(0, size.x);
-                int bi = i - start + std::max(0, center - _focusIndex);
-                buffer[bi].replace(0, text.size(), text);
-                if (i == _focusIndex) buffer[bi] = "\x1b[100m" + buffer[bi] + "\x1b[0m";
-            }
-        }
-        return buffer;
-    }) {}
-Scene::Scene(std::unordered_map<Key, std::function<void()>> binds, std::function<std::vector<std::string>()> render) : _render(std::move(render)) {
+Scene::Scene(std::unordered_map<Key, std::function<void()>> binds, std::function<std::vector<std::wstring>()> render, std::function<void()> update) : _update(std::move(update)) {
     _binds = {
         { Key::Up, [this] { if (_focusIndex > 0) { _focusIndex--; } } },
         { Key::Down, [this] { if (_focusIndex + 1 < static_cast<int>(widgets.size())) { _focusIndex++; } } }
     };
     for (auto& [key, callback] : binds) _binds.insert_or_assign(key, std::move(callback));
+
+    if (render) _render = std::move(render);
 }
 
 
@@ -52,6 +28,8 @@ int Scene::getFocusIndex() const { return _focusIndex; }
 
 
 void Scene::binds() {
+    if (_update) _update();
+
     for (auto& [key, callback] : _binds) {
         if (Input::pressed(key)) {
             callback();

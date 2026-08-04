@@ -7,25 +7,28 @@
 class Dropdown : public Widget {
 public:
     Dropdown(std::string text, std::vector<std::string> options);
+    Dropdown(std::string text, std::vector<std::wstring> options);
+    Dropdown(std::wstring text, std::vector<std::string> options);
+    Dropdown(std::wstring text, std::vector<std::wstring> options);
     ~Dropdown() override = default;
 
-    std::string text;
+    std::wstring text;
 
-    std::string curr() const;
-    const std::vector<std::string>& options() const;
+    std::wstring curr() const;
+    const std::vector<std::wstring>& options() const;
 
-    void set(std::vector<std::string> options);
+    void set(std::vector<std::wstring> options);
     void select(int i);
 
     void onChange(std::function<void()> act);
 
 protected:
-    std::string render() const override;
+    std::wstring render() const override;
 
 private:
     int icurr = -1;
 
-    std::vector<std::string> _options;
+    std::vector<std::wstring> _options;
     std::vector<Button*> _buttons;
 
     std::function<void()> _onChange;

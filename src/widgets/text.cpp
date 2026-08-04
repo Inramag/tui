@@ -3,7 +3,8 @@
 #include <tui/tui.hpp>
 #include <tui/input.hpp>
 
-Text::Text(std::string text) : text(std::move(text)), scene({
+Text::Text(std::string text) : Text(toWide(text)) {}
+Text::Text(std::wstring text) : text(std::move(text)), scene({
     { Key::Up, [this] {
         if (pos.y > 0) pos.y--;
     } },
@@ -15,9 +16,9 @@ Text::Text(std::string text) : text(std::move(text)), scene({
     } }
 }, [this] {
     Size size = Console::size;
-    std::vector<std::string> buffer(
+    std::vector<std::wstring> buffer(
         size.y,
-        std::string(size.x, ' ')
+        std::wstring(size.x, ' ')
     );
 
     int center = (size.y - 1) / 2;
@@ -50,7 +51,7 @@ Text::Text(std::string text) : text(std::move(text)), scene({
         buffer[std::max(0, center - pos.y) + l][c] = ch;
         c++;
     }
-    buffer[center] = "\x1b[100m" + buffer[center] + "\x1b[0m";
+    buffer[center] = L"\x1b[100m" + buffer[center] + L"\x1b[0m";
 
     return buffer;
 }) {
@@ -62,8 +63,8 @@ Text::Text(std::string text) : text(std::move(text)), scene({
     };
 }
 
-std::string Text::render() const {
-    std::string buff;
+std::wstring Text::render() const {
+    std::wstring buff;
     int i = 0;
     for (const auto& ch : text) {
         if (ch == '\n' || i == Console::size.x) break;

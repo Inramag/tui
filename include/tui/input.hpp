@@ -3,10 +3,13 @@
 #include <windows.h>
 
 #include <vector>
+#include <unordered_map>
 
 enum class Key : int {
+    Backspace = VK_BACK,
     Enter = VK_RETURN,
     Escape = VK_ESCAPE,
+    Space = VK_SPACE,
     Left = VK_LEFT, Up, Right, Down,
     N0 = '0', N1, N2, N3, N4, N5, N6, N7, N8, N9,
     A = 'A', B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
@@ -16,6 +19,7 @@ enum class Key : int {
 class Input {
 public:
     static bool pressed(Key key);
+    static bool pressed(Key key, wchar_t& ch);
     static bool down(Key key);
     
 
@@ -27,6 +31,6 @@ private:
 
     static HANDLE _input;
 
-    static std::vector<Key> _pressed;
+    static std::unordered_map<Key, wchar_t> _pressed;
     static std::vector<Key> _down;
 };
